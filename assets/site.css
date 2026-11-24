@@ -80,3 +80,8 @@ main .wrap { overflow-x: auto; }
 .recs li { margin: 0.6em 0; }
 #machine table { margin: 0; }
 #machine td:first-child { color: var(--ink-2); width: 9em; }
+
+.shots { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1rem; align-items: start; }
+.shots figure { margin: 0; }
+.shots img { width: 100%; height: auto; border-radius: 10px; border: 1px solid var(--border, #d0d7de); }
+.shots figcaption { font-size: .85rem; opacity: .75; margin-top: .4rem; }
