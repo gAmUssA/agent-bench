@@ -1,0 +1,12 @@
+Build a native macOS weather app in this directory.
+
+Requirements:
+- SwiftUI, Swift Package Manager, no Xcode project. `swift build -c release` at the repository root must succeed and produce the executable.
+- On launch it opens one window and shows the current weather and a 7-day forecast for Berlin (the default city), with temperatures in degrees Celsius and the day names (Mon, Tue, ...) on the forecast rows.
+- A search field lets the user type a city name and pick a result; the window then shows that city's weather.
+- Weather data comes from the free Open-Meteo APIs, which need no API key: geocoding at https://geocoding-api.open-meteo.com/v1/search?name=<city> and the forecast at https://api.open-meteo.com/v1/forecast (current weather and daily max/min temperature and weather code).
+- Show temperature, a condition description or symbol (map the weather code), wind, and the daily forecast. Handle a network error with a visible message.
+- Make it look polished: clear layout, readable typography, light and dark mode.
+- The app must be a real windowed app: set the activation policy so the window appears and takes focus when the binary is launched from a terminal.
+
+Work until the app builds and its window shows live weather. Build it, launch it, and fix what you see. Do not stop to ask questions; make decisions yourself.

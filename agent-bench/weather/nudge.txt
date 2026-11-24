@@ -1,0 +1,5 @@
+You are not done. The automatic check failed:
+
+{{FAILURE}}
+
+Keep going. Fix it, build it with `swift build -c release`, launch it and check that its window shows live weather. Do not stop to ask questions and do not stop until the app builds and a window opens.
