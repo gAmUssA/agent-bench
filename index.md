@@ -41,5 +41,5 @@ Read the method, the caveats and the setup of each run in [Inkling 2 Mini setups
 <li><a href="bench-results/m1-max-64gb"><strong>Coding benchmark, M1 Max 64 GB</strong><span>Per-machine record</span></a></li>
 <li><a href="bench-results/m3-pro-36gb"><strong>Coding benchmark, M3 Pro 36 GB</strong><span>Per-machine record</span></a></li>
 <li><a href="bench-results/m2-pro-32gb"><strong>Coding benchmark, M2 Pro 32 GB</strong><span>Per-machine record</span></a></li>
-<li><a href="bench-results/README"><strong>Method</strong><span>How records are made and what is pinned</span></a></li>
+<li><a href="bench-results/"><strong>Method</strong><span>How records are made and what is pinned</span></a></li>
 </ul>
