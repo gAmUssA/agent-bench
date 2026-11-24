@@ -9,7 +9,7 @@ fail() { printf 'FAIL: %s\n' "$*" >&2; exit 1; }
 
 main() (
   local repo sandbox server="" key port closed err code rec_ok
-  local bench_stamp run_path
+  local bench_stamp out_stamp run_path
   repo=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")/.." && pwd -P)
   sandbox=$(mktemp -d "${TMPDIR:-/tmp}/agent-bench-rec-test.XXXXXX")
   trap 'if [[ -n "$server" ]]; then kill "$server" 2>/dev/null || true; wait "$server" 2>/dev/null || true; fi; rm -rf -- "$sandbox"' EXIT
@@ -24,6 +24,7 @@ exit 0"
   # Keep the real rec, and the other CLIs the report would query, off PATH.
   run_path="$sandbox/bin:$(dirname -- "$(command -v python3)"):/usr/bin:/bin:/usr/sbin:/sbin"
 
+  out_stamp=$(find "$repo/bench-out" -exec stat -f '%N %m %z' {} + 2>/dev/null | sort || true)
   bench_stamp=$(find "$repo/bench-results" -type f -print0 2>/dev/null | sort -z | xargs -0 shasum 2>/dev/null || true)
 
   install_rec() {
@@ -123,7 +124,7 @@ PY
   [[ "$(wc -l <"$sandbox/seen" | tr -d ' ')" == 1 ]] || fail "expected one script request: $(cat "$sandbox/seen")"
   [[ "$(cat "$sandbox/seen")" == "GET /v1/models Bearer ${key}" ]] || fail "script dropped the bearer: $(cat "$sandbox/seen")"
   [[ -f "$sandbox/report.md" ]] || fail "script did not write AGENT_BENCH_REPORT"
-  [[ ! -e "$repo/bench-out" ]] || fail "preflight wrote $repo/bench-out"
+  [[ "$out_stamp" == "$(find "$repo/bench-out" -exec stat -f '%N %m %z' {} + 2>/dev/null | sort || true)" ]] || fail "preflight changed $repo/bench-out"
   [[ "$bench_stamp" == "$(find "$repo/bench-results" -type f -print0 2>/dev/null | sort -z | xargs -0 shasum 2>/dev/null || true)" ]] \
     || fail "preflight changed bench-results"
   printf 'PASS: a stub serving /v1/models to the bearer key is accepted\n'
