@@ -59,6 +59,10 @@ driving it needs UI scripting, which was not enabled. The gate checks only the d
 06:56:25 result: passed after 3 rounds, 2750 s
 ```
 
+## Next contest
+
+The same setups also built a mobile [Flappy Bird game](flappy-bird-contest), with playable pages.
+
 ## Caveats
 
 - One run per engine. Model runs vary; three or more runs are needed before ranking anyone on this.

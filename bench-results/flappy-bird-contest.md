@@ -62,6 +62,10 @@ My reading of the screenshots:
 
 None of the three was played by a person; the games were judged from gate screenshots and the bot.
 
+## Other contest
+
+The same setups also built a native macOS app in the [weather-app contest](weather-app-contest).
+
 ## Caveats
 
 - One run per setup. Three or more runs are needed before ranking anyone.
