@@ -7,4 +7,4 @@
 set -euo pipefail
 here=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd -P)
 [ $# -eq 2 ] || { echo "usage: gate.sh <project-dir> <out-dir>" >&2; exit 1; }
-exec uv run --no-project --with playwright python "$here/gate.py" "$1" "$2"
+exec uv run --no-project --with playwright --with pillow python "$here/gate.py" "$1" "$2"

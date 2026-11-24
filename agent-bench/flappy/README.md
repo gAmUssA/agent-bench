@@ -5,7 +5,7 @@ Flappy Bird in one `index.html`. Run it with `TASK=flappy bash agent-bench/weath
 
 - `prompt.txt`, `nudge.txt`: what the model is asked, and the retry text that carries the gate's message.
 - `gate.sh` / `gate.py`: opens `index.html` in installed Google Chrome with a 390x844 touch viewport and checks that it is
-  self-contained, logs no errors, fills the screen without scrolling, exposes `window.game`, starts on a tap, ends when the
+  self-contained, logs no errors, fills the screen without scrolling, exposes `window.game`, draws the bird where `window.game.bird` says it is, starts on a tap, ends when the
   bird is left alone, restarts on a tap, and lets a simple bot pass a pipe.
 - `reference/index.html`: the smallest game that passes. `?mode=blank` draws nothing and exposes no hook.
 

@@ -7,6 +7,7 @@ self-contained, no console errors, mobile viewport and no scrolling, the window.
 the bird falls to game over untouched, a tap restarts, and a simple bot that taps when the bird is below the gap
 passes at least one pipe. GATE_QUERY (env) is appended to the page URL; the manual validation uses it.
 """
+import io
 import json
 import os
 import re
@@ -14,6 +15,7 @@ import sys
 import time
 from pathlib import Path
 
+from PIL import Image
 from playwright.sync_api import Error as PlaywrightError
 from playwright.sync_api import sync_playwright
 
@@ -39,6 +41,17 @@ def shot(page, path: Path) -> bytes:
 def colors(png: bytes) -> int:
     # Cheap proxy: distinct byte values in a sample of the compressed PNG; a flat image compresses to almost nothing.
     return len(set(png[::97]))
+
+
+def bird_visible(page, g: dict) -> int:
+    """Distinct colours (quantised) in the square around the reported bird; a drawn bird has body, eye and beak."""
+    b = g["bird"]
+    r = max(float(b["r"]), 4.0) + 3
+    x0, y0 = max(b["x"] - r, 0), max(b["y"] - r, 0)
+    clip = {"x": x0, "y": y0, "width": min(2 * r, W - x0), "height": min(2 * r, H - y0)}
+    img = Image.open(io.BytesIO(page.screenshot(clip=clip))).convert("RGB")
+    quantised = img.point(lambda v: v >> 4)
+    return len(quantised.getcolors(maxcolors=1 << 20) or [])
 
 
 def main() -> None:
@@ -88,6 +101,8 @@ def main() -> None:
         if colors(a) < 40:
             fail("The ready screen looks blank or a single flat colour. Draw the sky, ground and bird.")
 
+        if bird_visible(page, g) < 4:
+            fail("The bird is not visible where window.game.bird says it is (the square around its centre is nearly a single colour). Draw the bird at window.game.bird.x/y in CSS pixels, scaled correctly for the device pixel ratio, and keep it above the background.")
         page.touchscreen.tap(W // 2, H // 2)
         page.wait_for_timeout(600)
         g = state(page)
