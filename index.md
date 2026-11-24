@@ -54,6 +54,7 @@ Method, versions and per-run numbers: [Inkling 2 Mini setups compared](bench-res
 <tr><td>Memory</td><td>64 GB unified</td></tr>
 <tr><td>OS</td><td>macOS 27.0.1</td></tr>
 <tr><td>Harness</td><td>pi 1.6.0</td></tr>
+<tr><td>Memory pressure</td><td>About 26 GB of swap in use during the runs, left over from earlier sessions. See the method page.</td></tr>
 </tbody>
 </table>
 </section>

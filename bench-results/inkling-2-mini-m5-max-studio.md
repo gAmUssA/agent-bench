@@ -13,6 +13,7 @@ server stopped. Results are one machine on one day; see the disclaimer on the [h
 | OS | macOS 27.0.1 |
 | Power | On AC power, Low Power Mode off |
 | Other load | Everything else stopped between setups; the desktop was in normal use, so background load was not controlled |
+| Swap | 26.5 GB of a 27.6 GB swap file was in use when the runs ended. These pages were left over from earlier heavy sessions and were not cleared by a reboot, so every setup ran under the same stale swap. Measured with `sysctl vm.swapusage` after the runs, not before |
 
 ## What was measured
 
@@ -60,6 +61,7 @@ Raw per-run reports and decode logs: [`runs/2026-11-24/`](https://github.com/gAm
 - Decode speed is stable (under 3% spread), but it predicts agent time only roughly: agent time also depends
   on prefill, how many tool calls a model makes, and how long it reasons.
 - Longer context did not cost speed here: Unsloth at 256k was no slower than at 64k in this rerun.
+- Memory pressure may have slowed some runs. MTPLX logged one memory-guard event (`prefill_admission_shed`) during its three agent runs, and its run 2 was the slow one (254 s against 188 s and 169 s). A clean rerun after a reboot would show how much of the spread is swap. Decode speed is unlikely to be affected: MTPLX decoded at 125 tok/s here and 129 tok/s in an earlier pass.
 - Greedy decode is not what an agent sees. Agent runs sample, and speculative drafting accepts fewer tokens
   on less predictable output.
 
