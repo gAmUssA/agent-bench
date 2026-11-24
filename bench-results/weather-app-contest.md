@@ -1,8 +1,8 @@
-# Weather-app contest: Flint vs MTPLX, Inkling 2 Mini (2026-11-24)
+# Weather-app contest: Flint, MTPLX and Sonnet 5.5 (2026-11-24)
 
 The same model (Inkling 2 Mini), the same prompt and the same coding harness (pi), served by the two fastest engines
 from the [setup comparison](inkling-2-mini-m5-max-studio). Each one is asked to build a native macOS weather app,
-alone, with nothing else running. Results are one run per engine on one machine; see the disclaimer on the [home page](../).
+alone, with nothing else running. Sonnet 5.5 was added afterwards as a cloud reference point: it runs in Claude Code (`claude -p`) over the API, so it is a different model and harness, a yardstick rather than an engine result. Results are one run per setup on one machine; see the disclaimer on the [home page](../).
 
 ## The task
 
@@ -19,27 +19,29 @@ Runs were sequential: all other servers and harnesses were stopped before each e
 
 ## Results
 
-| | Flint | MTPLX |
-|---|---|---|
-| Gate | passed | passed |
-| Rounds needed | 3 | 1 |
-| Wall time | 2750 s (46 min) | 720 s (12 min) |
-| Model turns | 165 | 71 |
-| Tool calls | 183 | 70 |
-| Output tokens | 96,846 | 41,220 |
-| Swift code written | 532 lines, 4 files | 846 lines, 6 files |
+| | Flint | MTPLX | Sonnet 5.5 |
+|---|---|---|---|
+| Model and harness | Inkling 2 Mini, pi | Inkling 2 Mini, pi | Sonnet 5.5, Claude Code |
+| Gate | passed | passed | passed |
+| Rounds needed | 3 | 1 | 1 |
+| Wall time | 2750 s (46 min) | 720 s (12 min) | 75 s |
+| Model turns | 165 | 71 | 10 |
+| Tool calls | 183 | 70 | 6 |
+| Output tokens | 96,846 | 41,220 | 8,694 |
+| Swift code written | 532 lines, 4 files | 846 lines, 6 files | 316 lines, 4 files |
 
 Flint's first round ended with a window that showed one weekday name, its second with four. The gate's message named the
-miss, and round 3 fixed it. MTPLX passed on the first round.
+miss, and round 3 fixed it. MTPLX and Sonnet passed on the first round.
 
 ## What each one built
 
 <div class="shots">
 <figure><img src="../assets/weather/flint.png" alt="Weather app built with Flint: search field, Berlin 3 degrees overcast, four stat tiles, seven forecast rows" loading="lazy"><figcaption>Flint: functional, plain, gray background.</figcaption></figure>
 <figure><img src="../assets/weather/mtplx.png" alt="Weather app built with MTPLX: header, hero card with Berlin 3 degrees, three stat tiles, seven forecast rows with temperature range bars" loading="lazy"><figcaption>MTPLX: header, hero card, range bars.</figcaption></figure>
+<figure><img src="../assets/weather/sonnet.png" alt="Weather app built with Sonnet 5.5: search field, Berlin 3 degrees overcast on a glass card, seven forecast rows with conditions" loading="lazy"><figcaption>Sonnet 5.5: glass cards, conditions per day.</figcaption></figure>
 </div>
 
-Both show Berlin at 3 °C, which matches Open-Meteo at gate time. I did not exercise the city search in either app:
+All three show Berlin at 3 °C, which matches Open-Meteo at gate time. I did not exercise the city search in either app:
 driving it needs UI scripting, which was not enabled. The gate checks only the default view, so treat search as unverified.
 
 ## Supervisor log, Flint
