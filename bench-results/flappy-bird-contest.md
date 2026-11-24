@@ -32,6 +32,12 @@ animating frame, game over when left alone, a tap that restarts, and a simple bo
 Turns and tool calls are counted from each harness's own session log, so they are comparable in size, not exactly in meaning.
 Flint's first round failed the animation check (two frames 250 ms apart were identical); round 2 fixed it.
 
+## Play them
+
+The three games, exactly as each model wrote them, with no edits. Open them on a phone:
+[Flint](../demos/flappy/flint/) (renders broken, see below), [MTPLX](../demos/flappy/mtplx/) and
+[Sonnet 5.5](../demos/flappy/sonnet/).
+
 ## What each one built
 
 Each strip shows the ready screen, a frame during play and the game-over screen, captured by the gate.
