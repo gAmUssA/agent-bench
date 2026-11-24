@@ -39,7 +39,7 @@ pre { background: var(--code); padding: 16px 18px; border-radius: 10px; overflow
 pre code { background: none; padding: 0; }
 blockquote { margin: 0 0 1em; padding: 0 0 0 16px; border-left: 3px solid var(--line); color: var(--ink-2); }
 hr { border: 0; border-top: 1px solid var(--line); margin: 2.5em 0; }
-table { display: block; overflow-x: auto; border-collapse: collapse; width: 100%; margin: 0 0 1.5em; font-size: 0.93rem; font-variant-numeric: tabular-nums; }
+table { display: table; border-collapse: collapse; width: 100%; margin: 0 0 1.5em; font-size: 0.93rem; font-variant-numeric: tabular-nums; }
 th, td { text-align: left; padding: 10px 14px; border-bottom: 1px solid var(--line); white-space: nowrap; }
 th { font-weight: 600; color: var(--ink-2); font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.04em; border-bottom: 1px solid var(--ink-3); }
 tbody tr:hover td { background: color-mix(in srgb, var(--accent) 6%, transparent); }
@@ -71,3 +71,4 @@ td:first-child { white-space: normal; min-width: 14em; }
 .grid span { color: var(--ink-2); font-size: 0.88rem; }
 footer { border-top: 1px solid var(--line); color: var(--ink-3); font-size: 0.85rem; padding: 24px 0 40px; }
 @media (max-width: 560px) { .bars li { grid-template-columns: 1fr; gap: 4px; } h1 { font-size: 1.7rem; } }
+main .wrap { overflow-x: auto; }
