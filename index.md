@@ -62,8 +62,8 @@ Method, versions and per-run numbers: [Inkling 2 Mini setups compared](bench-res
 <h2 id="results">All results</h2>
 <ul class="grid">
 <li><a href="bench-results/inkling-2-mini-m5-max-studio"><strong>Inkling 2 Mini, M5 Max Studio</strong><span>Five setups: method, versions, every run</span></a></li>
-<li><a href="bench-results/flappy-bird-contest"><strong>Flappy Bird contest</strong><span>Flint, MTPLX and Sonnet 5.5 build a mobile game</span></a></li>
-<li><a href="bench-results/weather-app-contest"><strong>Weather-app contest</strong><span>Flint vs MTPLX build a native macOS app</span></a></li>
+<li><a href="bench-results/flappy-bird-contest"><strong>Flappy Bird contest</strong><span>Five setups build a mobile game</span></a></li>
+<li><a href="bench-results/weather-app-contest"><strong>Weather-app contest</strong><span>Five setups build a native macOS app</span></a></li>
 <li><a href="bench-results/unsloth-vs-ollama-inkling"><strong>Unsloth vs Ollama</strong><span>Earlier decode comparison and first agent runs</span></a></li>
 <li><a href="bench-results/agent-m5-max-64gb"><strong>Agent runs, M5 Max 64 GB</strong><span>pi, OpenCode and Claude Code harnesses</span></a></li>
 <li><a href="bench-results/agent-m1-max-64gb"><strong>Agent runs, M1 Max 64 GB</strong><span>The same tasks on older silicon</span></a></li>
