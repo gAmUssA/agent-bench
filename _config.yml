@@ -1,6 +1,10 @@
 title: agent-bench
 description: Local-model coding and agent benchmarks on Apple Silicon
-theme: jekyll-theme-minimal
+defaults:
+  - scope:
+      path: ""
+    values:
+      layout: default
 exclude:
   - agent-bench
   - tests
@@ -8,3 +12,4 @@ exclude:
   - README.md
   - LICENSE
   - "*.sh"
+  - bench-out
