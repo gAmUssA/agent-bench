@@ -1,0 +1,4 @@
+# raw model responses, generated sources and run logs (reproducible)
+bench-out/
+.DS_Store
+_site/

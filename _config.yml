@@ -1,0 +1,10 @@
+title: agent-bench
+description: Local-model coding and agent benchmarks on Apple Silicon
+theme: jekyll-theme-minimal
+exclude:
+  - agent-bench
+  - tests
+  - scripts
+  - README.md
+  - LICENSE
+  - "*.sh"
