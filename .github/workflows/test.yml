@@ -1,0 +1,16 @@
+name: Tests
+on:
+  pull_request:
+  push:
+    branches: [main]
+permissions:
+  contents: read
+jobs:
+  test:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: shellcheck
+        run: brew install shellcheck && shellcheck -x -S warning agent-bench/agent-bench.sh scripts/run-tests.sh tests/*.sh
+      - name: tests
+        run: bash scripts/run-tests.sh
