@@ -1,0 +1,26 @@
+Build a Flappy Bird game as a single file, index.html, in the current directory. It is for phones: design it for a
+portrait touch screen first.
+
+Requirements:
+- One self-contained index.html: inline CSS and JavaScript, no external requests (no CDN, no web fonts, no images by URL).
+  Draw everything with canvas or CSS.
+- Mobile first: a viewport meta tag with width=device-width and initial-scale=1, the game fills the whole screen with no
+  scrolling, no pinch zoom, no text selection and no pull-to-refresh. Respect the safe-area insets (notch, home bar).
+  Sharp on high-DPI screens. Control with one tap anywhere on the screen (touch events or pointer events); a mouse click
+  and the space bar also work.
+- Gameplay: a bird that falls under gravity and flaps up on each tap, pipes with a gap that scroll in from the right at
+  random heights, a score that goes up by one each time the bird passes a pipe, and a best score kept in localStorage.
+  Hitting a pipe, the ground or the ceiling ends the game.
+- Three screens: ready (a "Tap to start" prompt), playing (the score large at the top), and game over (the score, the best
+  score and a "Tap to restart" prompt). A tap on game over starts a new game.
+- Polish: a clear sky-and-ground look, a bird that tilts with its speed, smooth 60 fps motion that does not depend on the
+  screen's refresh rate, and a short flap animation.
+- Test hook: expose `window.game` as an object that is always current, with
+    state:  "ready" | "playing" | "over"
+    score:  the current score (a number)
+    bird:   { x, y, r }  the bird's centre and radius in CSS pixels
+    pipes:  an array of { x, width, gapTop, gapBottom } in CSS pixels, nearest last or first as you like
+  Keep these accurate on every frame; an automated check reads them.
+
+Do not stop to ask questions. When you think it is done, open it in your head as a phone would and check each requirement
+above, then finish with a one-paragraph summary.

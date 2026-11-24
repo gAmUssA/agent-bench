@@ -1,0 +1,44 @@
+<!doctype html>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Reference Flappy</title>
+<style>html,body{margin:0;height:100%;overflow:hidden;touch-action:none;user-select:none;background:#70c5ce}canvas{display:block;width:100vw;height:100vh}</style>
+<canvas id="c"></canvas>
+<script>
+// The smallest game that passes flappy/gate.py. ?mode=blank draws nothing and exposes no hook (for the reject check).
+const mode = new URLSearchParams(location.search).get('mode');
+const c = document.getElementById('c'), x = c.getContext('2d');
+let W = innerWidth, H = innerHeight;
+function fit() { W = innerWidth; H = innerHeight; const d = devicePixelRatio || 1; c.width = W * d; c.height = H * d; x.setTransform(d, 0, 0, d, 0, 0); }
+fit(); addEventListener('resize', fit);
+if (mode !== 'blank') {
+  const g = window.game = { state: 'ready', score: 0, bird: { x: W * 0.3, y: H * 0.45, r: 14 }, pipes: [] };
+  let vy = 0, last = performance.now(), spawn = 0, best = +localStorage.best || 0;
+  function reset() { g.state = 'ready'; g.score = 0; g.bird.y = H * 0.45; vy = 0; g.pipes = []; spawn = 0; }
+  function tap(e) { e.preventDefault(); if (g.state === 'ready') { g.state = 'playing'; vy = -340; } else if (g.state === 'playing') vy = -340; else reset(); }
+  addEventListener('touchstart', tap, { passive: false }); addEventListener('mousedown', tap);
+  function step(now) {
+    const dt = Math.min((now - last) / 1000, 0.05); last = now;
+    if (g.state === 'playing') {
+      vy += 900 * dt; g.bird.y += vy * dt; spawn -= dt;
+      if (spawn <= 0) { const top = 80 + Math.random() * (H - 360); g.pipes.push({ x: W, width: 56, gapTop: top, gapBottom: top + 170, passed: false }); spawn = 1.6; }
+      for (const p of g.pipes) {
+        p.x -= 140 * dt;
+        if (!p.passed && p.x + p.width < g.bird.x) { p.passed = true; g.score++; best = Math.max(best, g.score); localStorage.best = best; }
+        const hit = g.bird.x + g.bird.r > p.x && g.bird.x - g.bird.r < p.x + p.width && (g.bird.y - g.bird.r < p.gapTop || g.bird.y + g.bird.r > p.gapBottom);
+        if (hit) g.state = 'over';
+      }
+      g.pipes = g.pipes.filter(p => p.x + p.width > 0);
+      if (g.bird.y + g.bird.r > H - 80 || g.bird.y - g.bird.r < 0) g.state = 'over';
+    }
+    x.fillStyle = '#70c5ce'; x.fillRect(0, 0, W, H);
+    x.fillStyle = '#ded895'; x.fillRect(0, H - 80, W, 80);
+    x.fillStyle = '#73bf2e'; for (const p of g.pipes) { x.fillRect(p.x, 0, p.width, p.gapTop); x.fillRect(p.x, p.gapBottom, p.width, H - 80 - p.gapBottom); }
+    x.fillStyle = '#f7d51d'; x.beginPath(); x.arc(g.bird.x, g.bird.y, g.bird.r, 0, 7); x.fill();
+    x.fillStyle = '#fff'; x.font = 'bold 40px sans-serif'; x.textAlign = 'center'; x.fillText(g.score, W / 2, 80);
+    if (g.state !== 'playing') x.fillText(g.state === 'ready' ? 'Tap to start' : 'Game over: ' + g.score + ' (best ' + best + ')  Tap to restart', W / 2, H / 2 - 80);
+    requestAnimationFrame(step);
+  }
+  requestAnimationFrame(step);
+}
+</script>

@@ -1,0 +1,5 @@
+An automated check of your Flappy Bird page failed. Fix the problem, keep everything that already works, and finish with a one-paragraph summary.
+
+The check said:
+
+{{FAILURE}}
