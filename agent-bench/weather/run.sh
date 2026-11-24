@@ -70,7 +70,7 @@ while :; do
   else
     nudge=$(<"$task/nudge.txt"); prompt=${nudge//\{\{FAILURE\}\}/$failure}; cont=(-c)
   fi
-  say "round $round: pi -p (timeout ${round_timeout}s)"
+  say "round $round: $([ "$prov" = claude ] && echo claude -p || echo pi -p) (timeout ${round_timeout}s)"
   if [ "$prov" = claude ]; then
     # Claude Code with only project settings: no user CLAUDE.md, hooks, skills or MCP servers, like pi's bare flags.
     (cd "$root/app" && timeout "$round_timeout" claude -p "${cont[@]}" --model "$model" \
@@ -81,7 +81,7 @@ while :; do
         --no-extensions --no-skills --no-context-files --offline \
         --provider "$prov" --model "$model" "$prompt" </dev/null) >"$root/out/round-$round.txt" 2>&1
   fi
-  say "round $round: pi exited $? ($(wc -c <"$root/out/round-$round.txt" | tr -d ' ') bytes of output)"
+  say "round $round: harness exited $? ($(wc -c <"$root/out/round-$round.txt" | tr -d ' ') bytes of output)"
 
   if failure=$("$task/gate.sh" "$root/app" "$root/out" 2>&1); then
     say "$failure"
