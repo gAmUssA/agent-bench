@@ -22,29 +22,29 @@ animating frame, game over when left alone, a tap that restarts, and a simple bo
 |---|---|---|---|
 | Model and harness | Inkling 2 Mini, pi | Inkling 2 Mini, pi | Sonnet 5.5, Claude Code |
 | Gate | passed | passed | passed |
-| Rounds needed | 2 | 1 | 1 |
-| Wall time | 605 s (10 min) | 458 s (8 min) | 106 s |
-| Model turns | 60 | 16 | 6 |
-| Tool calls | 61 | 15 | 2 |
-| Output tokens | 58,079 | 23,896 | 19,088 |
-| index.html | 322 lines | 504 lines | 348 lines |
+| Rounds needed | 1 | 1 | 1 |
+| Wall time | 255 s (4 min) | 458 s (8 min) | 106 s |
+| Model turns | 14 | 16 | 6 |
+| Tool calls | 14 | 15 | 2 |
+| Output tokens | 26,529 | 23,896 | 19,088 |
+| index.html | 408 lines | 504 lines | 348 lines |
 
 Turns and tool calls are counted from each harness's own session log, so they are comparable in size, not exactly in meaning.
-Flint's first round failed the animation check (two frames 250 ms apart were identical); round 2 fixed it.
+These are Flint's second run. Its first run (2 rounds, 605 s) passed an earlier gate while drawing only sky and clouds, so the gate was tightened to require a visible bird and Flint was rerun. The first run's page is kept in the repository history, not hosted.
 
 ## Play them
 
 The three games, exactly as each model wrote them, with no edits. Open them on a phone:
-[Flint](../demos/flappy/flint/) (renders broken, see below), [MTPLX](../demos/flappy/mtplx/) and
+[Flint](../demos/flappy/flint/), [MTPLX](../demos/flappy/mtplx/) and
 [Sonnet 5.5](../demos/flappy/sonnet/).
 
 ## What each one built
 
 Each strip shows the ready screen, a frame during play and the game-over screen, captured by the gate.
 
-**Flint** passed the gate, but its screenshots show a game you could not play:
+**Flint** (second run):
 
-![Flint's game: only a blue sky with clouds is visible in all three screens](../assets/flappy/flint.png)
+![Flint's game: ready screen with bird, a pipe during play, game-over screen with restart prompt](../assets/flappy/flint.png)
 
 **MTPLX**:
 
@@ -56,7 +56,7 @@ Each strip shows the ready screen, a frame during play and the game-over screen,
 
 My reading of the screenshots:
 
-- **Flint:** the bird, ground and text are not visible in any screen; the page shows sky and clouds, plus a pipe once play starts. The game logic works (the bot scored through `window.game`), but what is drawn is broken, so I count this as a gate pass and a visual fail. The gate checks state through the hook and animation by frame difference, not that the bird is on screen.
+- **Flint:** complete and readable: clouds, bird, pipes with caps, ground, a score and a restart prompt. The ready-screen prompt overlaps the bird slightly, and the game-over screen lacks a score card, so it is the plainest of the three.
 - **MTPLX:** clean and complete: sun, clouds, bird, pipe with caps, ground, readable overlays.
 - **Sonnet 5.5:** the most polished (hills, striped ground, score card). One flaw: a pipe's cap sits offset from its body.
 
@@ -69,6 +69,6 @@ The same setups also built a native macOS app in the [weather-app contest](weath
 ## Caveats
 
 - One run per setup. Three or more runs are needed before ranking anyone.
-- The gate is a floor, not a grade. Flint's pass shows it can accept a game that renders wrongly; a check that the bird is visible at its reported position would close that gap and is not in this run.
+- The gate is a floor, not a grade. It now checks that the bird is drawn where the hook says, but it cannot judge looks or feel. MTPLX and Sonnet were rechecked against the tightened gate and still pass.
 - The machine had heavy swap in use during these runs, which can lengthen local wall times.
 - Re-run it: `TASK=flappy bash agent-bench/weather/contest.sh flint mtplx sonnet`.
