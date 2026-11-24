@@ -1,0 +1,6 @@
+run 0 decode 235.7 t/s tokens 400
+run 1 decode 232.3 t/s tokens 400
+run 2 decode 231.1 t/s tokens 400
+run 3 decode 232.7 t/s tokens 400
+run 4 decode 236.3 t/s tokens 400
+SUMMARY min 231.1 median 232.7 max 236.3

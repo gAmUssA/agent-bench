@@ -1,0 +1,29 @@
+name: A result looks wrong
+description: A number on gamov.io/agent-bench does not match what you see, or the method has a flaw
+labels: ["result-dispute"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for checking. Results come from one Mac Studio (M5 Max, 64 GB) and will differ on other machines, so a different number alone is not a bug. A flaw in the method, a misconfigured setup, or a number that does not match its own raw output is.
+  - type: input
+    id: row
+    attributes:
+      label: Which result
+      description: The setup and the number, for example "oMLX 0.8.3, median total 231 s".
+    validations:
+      required: true
+  - type: textarea
+    id: what
+    attributes:
+      label: What you expected, and why
+      description: Your number, or the flaw you see.
+    validations:
+      required: true
+  - type: textarea
+    id: env
+    attributes:
+      label: Your machine and versions
+      description: Chip, memory, macOS, and the server or harness version you ran.
+    validations:
+      required: false

@@ -72,3 +72,11 @@ td:first-child { white-space: normal; min-width: 14em; }
 footer { border-top: 1px solid var(--line); color: var(--ink-3); font-size: 0.85rem; padding: 24px 0 40px; }
 @media (max-width: 560px) { .bars li { grid-template-columns: 1fr; gap: 4px; } h1 { font-size: 1.7rem; } }
 main .wrap { overflow-x: auto; }
+
+.notice { background: color-mix(in srgb, var(--accent) 8%, var(--surface)); border: 1px solid color-mix(in srgb, var(--accent) 30%, var(--line));
+  border-radius: 12px; padding: 14px 18px; margin: 28px 0 0; font-size: 0.93rem; color: var(--ink-2); }
+.notice strong { color: var(--ink); }
+.recs { margin: 14px 0 0; padding-left: 1.2em; }
+.recs li { margin: 0.6em 0; }
+#machine table { margin: 0; }
+#machine td:first-child { color: var(--ink-2); width: 9em; }
