@@ -7,6 +7,7 @@
 #   --health   shell command that succeeds while the model server is up; checked before every round
 #   --restart  shell command that starts the server again when the health check fails
 #
+# Provider "claude" runs `claude -p` instead of pi; the model is a Claude model id.
 # Env: TASK_DIR (directory holding prompt.txt, nudge.txt and gate.sh; default: this directory)  WEATHER_ROOT (default ${TMPDIR:-/tmp}/weather)  MAX_ROUNDS (12)  MAX_SECS (10800)  ROUND_TIMEOUT (2700)
 # Layout: $WEATHER_ROOT/<name>/{app,session,out,state}. Rerunning with the same name resumes the session.
 # Exit: 0 gate passed, 1 limit reached or setup error. Writes out/result.json either way.
@@ -70,9 +71,16 @@ while :; do
     nudge=$(<"$task/nudge.txt"); prompt=${nudge//\{\{FAILURE\}\}/$failure}; cont=(-c)
   fi
   say "round $round: pi -p (timeout ${round_timeout}s)"
-  (cd "$root/app" && timeout "$round_timeout" pi -p "${cont[@]}" --session-dir "$root/session" \
-      --no-extensions --no-skills --no-context-files --offline \
-      --provider "$prov" --model "$model" "$prompt" </dev/null) >"$root/out/round-$round.txt" 2>&1
+  if [ "$prov" = claude ]; then
+    # Claude Code with only project settings: no user CLAUDE.md, hooks, skills or MCP servers, like pi's bare flags.
+    (cd "$root/app" && timeout "$round_timeout" claude -p "${cont[@]}" --model "$model" \
+        --allowedTools "Bash Edit Write Read Glob Grep" --setting-sources project \
+        --strict-mcp-config --disable-slash-commands "$prompt" </dev/null) >"$root/out/round-$round.txt" 2>&1
+  else
+    (cd "$root/app" && timeout "$round_timeout" pi -p "${cont[@]}" --session-dir "$root/session" \
+        --no-extensions --no-skills --no-context-files --offline \
+        --provider "$prov" --model "$model" "$prompt" </dev/null) >"$root/out/round-$round.txt" 2>&1
+  fi
   say "round $round: pi exited $? ($(wc -c <"$root/out/round-$round.txt" | tr -d ' ') bytes of output)"
 
   if failure=$("$task/gate.sh" "$root/app" "$root/out" 2>&1); then

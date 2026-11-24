@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # Runs the weather contest for each named setup, one after another, with every other model server stopped.
 #
-#   [TASK=weather|flappy] contest.sh <setup>...        setups: flint, mtplx; TASK picks the task directory (default weather)
+#   [TASK=weather|flappy] contest.sh <setup>...        setups: flint, mtplx, sonnet (Claude Code, no local server); TASK picks the task directory (default weather)
 #
 # For each setup: stop all servers, start its server, run run.sh in its own Rex session (weather-<setup>),
 # render the session's screen to a PNG every INTERVAL seconds (default 60), and stop the server when run.sh finishes.
@@ -32,7 +32,11 @@ setup_vars() { # sets prov model start health
       prov=mtplx model=mtplx-inkling-2-mini-bare-speed
       start="nohup mtplx serve --model Youssofal/Inkling-2-Mini-MTPLX-Bare-Speed --model-search-dir /Volumes/StudioStack/models/huggingface/hub --port 8001 >$WEATHER_ROOT/mtplx-serve.log 2>&1 &"
       health="curl -sf http://127.0.0.1:8001/v1/models" ;;
-    *) echo "unknown setup '$1'; use flint or mtplx" >&2; return 1 ;;
+    sonnet)
+      prov=claude model=claude-sonnet-5-5
+      start="true"
+      health="true" ;;
+    *) echo "unknown setup '$1'; use flint, mtplx or sonnet" >&2; return 1 ;;
   esac
 }
 
