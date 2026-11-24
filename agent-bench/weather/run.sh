@@ -2,9 +2,9 @@
 # Supervised weather-app run: pi works on prompt.txt in rounds until gate.sh passes.
 # A model saying "done" never ends the run; only the gate, the round limit or the time limit does.
 #
-#   run.sh <name> <pi-provider> <pi-model> [--health <url>] [--restart <command>]
+#   run.sh <name> <pi-provider> <pi-model> [--health <command>] [--restart <command>]
 #
-#   --health   URL that answers 200 while the model server is up; checked before every round
+#   --health   shell command that succeeds while the model server is up; checked before every round
 #   --restart  shell command that starts the server again when the health check fails
 #
 # Env: WEATHER_ROOT (default ${TMPDIR:-/tmp}/weather)  MAX_ROUNDS (12)  MAX_SECS (10800)  ROUND_TIMEOUT (2700)
@@ -13,13 +13,13 @@
 set -uo pipefail
 
 here=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd -P)
-usage() { echo "usage: run.sh <name> <pi-provider> <pi-model> [--health <url>] [--restart <command>]" >&2; exit 1; }
+usage() { echo "usage: run.sh <name> <pi-provider> <pi-model> [--health <command>] [--restart <command>]" >&2; exit 1; }
 [ $# -ge 3 ] || usage
 name=$1 prov=$2 model=$3; shift 3
 health="" restart=""
 while [ $# -gt 0 ]; do
   case $1 in
-    --health) health=${2:?--health needs a url}; shift 2 ;;
+    --health) health=${2:?--health needs a command}; shift 2 ;;
     --restart) restart=${2:?--restart needs a command}; shift 2 ;;
     *) usage ;;
   esac
@@ -46,11 +46,11 @@ finish() { # status
 
 ensure_server() {
   [ -n "$health" ] || return 0
-  curl -sf --max-time 10 "$health" >/dev/null && return 0
-  say "model server not answering at $health"
+  timeout 30 bash -c "$health" >/dev/null 2>&1 && return 0
+  say "model server health check failed: $health"
   [ -n "$restart" ] || { say "no --restart given"; return 1; }
   bash -c "$restart" >>"$root/out/restart.log" 2>&1 &
-  for _ in $(seq 1 120); do curl -sf --max-time 5 "$health" >/dev/null && { say "model server is back"; return 0; }; sleep 5; done
+  for _ in $(seq 1 120); do timeout 30 bash -c "$health" >/dev/null 2>&1 && { say "model server is back"; return 0; }; sleep 5; done
   return 1
 }
 
